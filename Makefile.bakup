@@ -1,39 +1,5 @@
-COLOR=  \
-	"" \
-	-dark \
-	-light
-
-SIZE=  \
-	"" \
-	-compact
-
-VERSION= 3.18 \
-	3.20 \
-	3.22 \
-	3.24
-
-%.scss: %.css
-	sassc -M -t expanded "$@" "$<"
-
-color-compact-%: 
-
-color-%: color-compact-% src/gtk-3.0/3.18/gtk%.scss
-
-
-all: color-dark color-light
-	#Generating the css...
-	
-	@for color in $(COLOR) ; do \
-		sassc -M -t expanded ./src/gtk-3.0/3.18/gtk$${color}.scss ./src/gtk-3.0/3.18/gtk$${color}.css ; \
-		for size in $(SIZE) ; do \
-			for version in $(VERSION) ; do \
-				sassc -M -t expanded ./src/gtk-3.0/$${version}/gtk$${color}$${size}.scss ./src/gtk-3.0/$${version}/gtk$${color}$${size}.css ; \
-			done ; \
-			for version in $(VERSION) ; do \
-				sassc -M -t expanded ./src/gnome-shell/$${version}/gnome-shell$${color}$${size}.scss ./src/gnome-shell/$${version}/gnome-shell$${color}$${size}.css ; \
-			done \
-		done \
-	done
+all:
+	./parse-sass.sh
 
 install:
 	./install.sh $(DESTDIR)

@@ -1,39 +1,48 @@
-COLOR=  \
-	"" \
-	-dark \
-	-light
+CSS=\
+	src/gtk-3.0/3.18/gtk.css \
+	src/gtk-3.0/3.18/gtk-dark.css \
+	src/gtk-3.0/3.18/gtk-light.css \
+	src/gnome-shell/3.18/gnome-shell.css \
+	src/gnome-shell/3.18/gnome-shell-dark.css \
+	src/gnome-shell/3.18/gnome-shell-light.css \
+	src/gtk-3.0/3.20/gtk.css \
+	src/gtk-3.0/3.20/gtk-dark.css \
+	src/gtk-3.0/3.20/gtk-light.css \
+	src/gtk-3.0/3.20/gtk-compact.css \
+	src/gtk-3.0/3.20/gtk-dark-compact.css \
+	src/gtk-3.0/3.20/gtk-light-compact.css \
+	src/gnome-shell/3.20/gnome-shell.css \
+	src/gnome-shell/3.20/gnome-shell-dark.css \
+	src/gnome-shell/3.20/gnome-shell-light.css \
+	src/gnome-shell/3.20/gnome-shell-compact.css \
+	src/gnome-shell/3.20/gnome-shell-dark-compact.css \
+	src/gnome-shell/3.20/gnome-shell-light-compact.css \
+	src/gtk-3.0/3.22/gtk.css \
+	src/gtk-3.0/3.22/gtk-dark.css \
+	src/gtk-3.0/3.22/gtk-light.css \
+	src/gtk-3.0/3.22/gtk-compact.css \
+	src/gtk-3.0/3.22/gtk-dark-compact.css \
+	src/gtk-3.0/3.22/gtk-light-compact.css \
+	src/gnome-shell/3.22/gnome-shell.css \
+	src/gnome-shell/3.22/gnome-shell-dark.css \
+	src/gnome-shell/3.22/gnome-shell-light.css \
+	src/gnome-shell/3.22/gnome-shell-compact.css \
+	src/gnome-shell/3.22/gnome-shell-dark-compact.css \
+	src/gnome-shell/3.22/gnome-shell-light-compact.css \
+	src/gnome-shell/3.24/gnome-shell.css \
+	src/gnome-shell/3.24/gnome-shell-dark.css \
+	src/gnome-shell/3.24/gnome-shell-light.css \
+	src/gnome-shell/3.24/gnome-shell-compact.css \
+	src/gnome-shell/3.24/gnome-shell-dark-compact.css \
+	src/gnome-shell/3.24/gnome-shell-light-compact.css
 
-SIZE=  \
-	"" \
-	-compact
+all: $(CSS)
 
-VERSION= 3.18 \
-	3.20 \
-	3.22 \
-	3.24
+%.css: %.scss
+	sassc -M -t expanded "$<" "$@"
 
-%.scss: %.css
-	sassc -M -t expanded "$@" "$<"
-
-color-compact-%: 
-
-color-%: color-compact-% src/gtk-3.0/3.18/gtk%.scss
-
-
-all: color-dark color-light
-	#Generating the css...
-	
-	@for color in $(COLOR) ; do \
-		sassc -M -t expanded ./src/gtk-3.0/3.18/gtk$${color}.scss ./src/gtk-3.0/3.18/gtk$${color}.css ; \
-		for size in $(SIZE) ; do \
-			for version in $(VERSION) ; do \
-				sassc -M -t expanded ./src/gtk-3.0/$${version}/gtk$${color}$${size}.scss ./src/gtk-3.0/$${version}/gtk$${color}$${size}.css ; \
-			done ; \
-			for version in $(VERSION) ; do \
-				sassc -M -t expanded ./src/gnome-shell/$${version}/gnome-shell$${color}$${size}.scss ./src/gnome-shell/$${version}/gnome-shell$${color}$${size}.css ; \
-			done \
-		done \
-	done
+clean:
+	rm -f $(CSS)
 
 install:
 	./install.sh $(DESTDIR)
@@ -61,4 +70,4 @@ uninstall:
 	-rm -rf $(DESTDIR)/usr/share/themes/Pop-light-compact
 	-rm -rf $(DESTDIR)/usr/share/themes/Pop-dark-compact
 
-.PHONY: all install uninstall 
+.PHONY: all install uninstall
